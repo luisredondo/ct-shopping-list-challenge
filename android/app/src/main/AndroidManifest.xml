@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.createthrive.luisredondochallenge.ct_shopping_list_challenge">
+    package="com.luisredondo.ctShoppingListChallenge">
    <application
         android:label="ct_shopping_list_challenge"
         android:name="${applicationName}"

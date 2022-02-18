@@ -1,4 +1,4 @@
-package com.createthrive.luisredondochallenge.ct_shopping_list_challenge
+package com.luisredondo.ctShoppingListChallenge
 
 import io.flutter.embedding.android.FlutterActivity
 
