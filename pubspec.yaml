@@ -45,6 +45,12 @@ dependencies:
   # State Management
   flutter_bloc: ^8.0.1
 
+  # Ui
+  expandable: ^5.0.1
+
+  # Clients
+  image_picker: ^0.8.4+9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

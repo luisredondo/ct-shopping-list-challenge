@@ -20,3 +20,4 @@ linter:
   rules:
     sort_pub_dependencies: false
     avoid_classes_with_only_static_members: false
+    directives_ordering: false
