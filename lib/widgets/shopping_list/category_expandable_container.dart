@@ -12,22 +12,32 @@ class CategoryExpandableContainer extends StatelessWidget {
     required this.items,
     required this.onCategoryDelete,
     required this.onItemDelete,
-    required this.onItemAddToFavorites,
+    required this.onItemFavoritesEvent,
+    required this.onCategoyDeleteConfirm,
+    required this.onItemDeleteConfirm,
+    this.addedDateBuilder
   }) : super(key: key);
 
   final Category category;
   final List<Item> items;
   final void Function(Category) onCategoryDelete;
-  final void Function(Item) onItemDelete;
-  final void Function(Item) onItemAddToFavorites;
+  final void Function(Category, Item) onItemDelete;
+  final void Function(Category, Item) onItemFavoritesEvent;
+  final Future<bool> Function() onCategoyDeleteConfirm;
+  final Future<bool> Function() onItemDeleteConfirm;
+  final Widget? Function(Item)? addedDateBuilder;
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(category.name),
+      key: Key(category.id),
       background: Container(),
       secondaryBackground: Container(color: Colors.red),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (DismissDirection direction) async {
+        final bool confirm = await onCategoyDeleteConfirm();
+        return confirm;
+      },
       child: ExpandablePanel(
         controller: ExpandableController(
           initialExpanded: true,
@@ -51,22 +61,34 @@ class CategoryExpandableContainer extends StatelessWidget {
           children: <Widget>[
             for (final item in items) ...[
               Dismissible(
-                key: Key(item.name),
+                key: Key(item.id),
                 background: Container(color: Colors.yellow),
                 secondaryBackground: Container(color: Colors.red),
+                confirmDismiss: (DismissDirection direction) async {
+                  bool confirm = false;
+                  if (direction == DismissDirection.startToEnd) {
+                    onItemFavoritesEvent(category, item);
+                  } else if (direction == DismissDirection.endToStart) {
+                    confirm = await onItemDeleteConfirm();
+                  }
+                  return confirm;
+                },
                 child: ListTile(
                   title: Text(item.name),
-                  leading: Image.network(item.image),
+                  subtitle: addedDateBuilder?.call(item),
+                  leading: Image.network(item.imageUrl),
                   trailing: IconButton(
-                    icon: const Icon(Icons.favorite),
-                    onPressed: () {},
+                    icon: Icon(Icons.favorite, color: item.isFavorite ?Colors.amber : null),
+                    onPressed: () {
+                      onItemFavoritesEvent(category, item);
+                    },
                   ),
                 ),
                 onDismissed: (direction) {
                   if (direction == DismissDirection.endToStart) {
-                    onItemDelete(item);
+                    onItemDelete(category, item);
                   } else {
-                    onItemAddToFavorites(item);
+                    onItemFavoritesEvent(category, item);
                   }
                 },
               )

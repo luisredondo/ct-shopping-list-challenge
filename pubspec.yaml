@@ -50,6 +50,17 @@ dependencies:
 
   # Clients
   image_picker: ^0.8.4+9
+  firebase_storage: ^10.2.7
+
+  # Utils
+  equatable: ^2.0.3
+  path: ^1.8.1
+
+dependency_overrides:
+  # The following overrides the version of the cupertino_icons package.
+
+  # Utils
+  path: ^1.8.1
 
 dev_dependencies:
   flutter_test:
